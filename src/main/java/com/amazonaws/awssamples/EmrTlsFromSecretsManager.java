@@ -1,18 +1,18 @@
 /**
- * MIT No Attribution
+ * Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so.
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package com.amazonaws.awssamples;
 
@@ -121,51 +121,5 @@ public class EmrTlsFromSecretsManager extends AbstractEmrTlsProvider {
 
 //		System.out.println(secret);
 		return secret;
-	}
-
-	public static void main(String[] args) {
-//		EmrTlsFromSecretsManager emrTls = new EmrTlsFromSecretsManager();
-//		emrTls.getSecret("testsecret");
-//		emrTls.getTlsArtifacts();
-
-		System.out.println("Creating service");
-		int totalThreads = 100;
-		if(args.length>0) totalThreads=Integer.parseInt(args[0]);
-		ExecutorService service = Executors.newFixedThreadPool(totalThreads);
-
-		List<Callable<Integer>> futureList = new ArrayList<>();
-		for ( int i=0; i<totalThreads; i++){
-			int cnt = i;
-			Callable<Integer> tlsCallable = () -> {
-				EmrTlsFromSecretsManager emrTls = new EmrTlsFromSecretsManager();
-				emrTls.getTlsArtifacts();
-				System.out.println("cnt:"+cnt);
-				return cnt;
-			};
-			futureList.add(tlsCallable);
-		}
-		System.out.println("Starting service");
-		try{
-			List<Future<Integer>> futures = service.invokeAll(futureList);
-			for(Future<Integer> f:futures) {
-				try {
-					f.get();
-				} catch (ExecutionException ex) {
-					ex.getCause().printStackTrace();
-				}
-			}
-
-			service.shutdown();
-			if(!service.awaitTermination(10, TimeUnit.SECONDS)){
-				System.out.println("Long waiting: calling shutdownNow()...");
-				service.shutdownNow();
-				System.out.println("force shutdown");
-			}
-			else {
-				System.out.println("Completed");
-			}
-		}catch(Exception err){
-			err.printStackTrace();
-		}
 	}
 }
