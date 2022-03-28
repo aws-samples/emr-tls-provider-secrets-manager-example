@@ -1,17 +1,9 @@
-## My Project
+## EMR TLS Custom Certificate Provider
 
-TODO: Fill this README out!
+EMR TLS Custom Certificate Provider examples 
 
-Be sure to:
+* EmrTlsFromSecretsManager - source code of TLS Custom Certificate provider using Secrets Manager
 
-* Change the title in this README
-* Edit your repository description on GitHub
+## License Summary
 
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+This sample code is made available under a modified MIT license. See the LICENSE file.
